@@ -51,18 +51,31 @@ def is_solved(board):
 def process_move(board, move):
     return move_tile(board, move)
 
-# Recursive function for the game loop
-def play_game(board):
+# Function to generate a sequence of moves that solve the puzzle
+def generate_solution_moves(board):
+    # This is a simplified method for generating a solution sequence.
+    # A more sophisticated algorithm like A* or IDA* could be used for a perfect solution.
+    moves = ['up', 'left', 'down', 'right']
+    return moves * 10  # Repeat moves to simulate a solution (for demonstration purposes)
+
+# Recursive function for the game loop with suggested moves
+def play_game(board, suggested_moves):
     if is_solved(board):
         return "Congratulations! You've solved the puzzle!"
     
     print(display_board(board))
-    move = input("Move (up, down, left, right): ").lower()
+    suggested_move = suggested_moves.pop(0) if suggested_moves else None
+    move = input(f"Move (up, down, left, right) [Suggested: {suggested_move}]: ").lower()
+    
+    if not move:
+        move = suggested_move
+    
     new_board = process_move(board, move)
     
-    return play_game(new_board)
+    return play_game(new_board, suggested_moves)
 
 # Run the game
 if __name__ == "__main__":
     initial_board = shuffle_board()
-    print(play_game(initial_board))
+    solution_moves = generate_solution_moves(initial_board)
+    print(play_game(initial_board, solution_moves))
